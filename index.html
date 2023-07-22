@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recomendações</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <link rel="stylesheet" href="css.css">
+  <script src="client.js" defer></script>
+  <script src="index.js" defer></script>
+</head>
+<body>
+   <header>
+    <h1 class="logo">Nome de Usuário:</h1>
+    <!-- Formulário de Login -->
+    <div class="username-container">
+      <div class="mb-3">
+        <label for="username" class="form-label"></label>
+        <input type="text" id="username" class="form-control" required>
+      </div>
+      <button onclick="fazerLogin()" class="btn btn-primary">Entrar</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <!-- Formulário de Adicionar Recomendação -->
+      <section class="recomendacao-container form-container">
+        <h2 class="mt-5" style="color: black;">Recomendação</h2>
+        <div class="mb-3">
+          <label for="movieInput" class="form-label" style="color: black;">Nome do Filme/Série:</label>
+          <input type="text" id="movieInput" class="form-control" required>
+          <button onclick="adicionarRecomendacao()" class="btn btn-success me-2">Adicionar</button>
+        </div>
+        <div class="mb-3">
+          <label for="tipoMidia" class="form-label" style="color: white;">Tipo de Mídia:</label>
+          <select id="tipoMidia" class="form-select">
+            <option value="movie">Filme</option>
+            <option value="tv">Série</option>
+           <label for="ano">Ano ou Intervalo de Anos:</label>
+           <input type="text" id="ano" placeholder="Digite o ano ou intervalo (ex: 2000 ou 2000-2023)">
+
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="generoFilme" class="form-label" style="color: white;">Escolha o gênero do filme:</label>
+          <select id="generoFilme" class="form-select">
+            <option value="">Todos</option>
+            <option value="28">Ação</option>
+            <option value="12">Aventura</option>
+            <option value="16">Animação</option>
+            <option value="35">Comédia</option>
+            <option value="80">Crime</option>
+            <option value="99">Documentário</option>
+            <option value="18">Drama</option>
+            <option value="10751">Família</option>
+            <option value="14">Fantasia</option>
+            <option value="36">História</option>
+            <option value="27">Terror</option>
+            <option value="10402">Música</option>
+            <option value="9648">Mistério</option>
+            <option value="10749">Romance</option>
+            <option value="878">Ficção Científica</option>
+            <option value="10770">Cinema TV</option>
+            <option value="53">Suspense</option>
+            <option value="10752">Guerra</option>
+            <option value="37">Faroeste</option>
+            <!-- Opções de gênero continuam aqui -->
+          </select>
+        </div>
+          <!-- Novo dropdown para os gêneros de série -->
+        <div class="mb-3">
+          <label for="generoSerie" class="form-label" style="color: white;">Escolha o gênero da série:</label>
+          <select id="generoSerie" class="form-select">
+            <option value="">Todos</option>
+            <option value="28">Ação</option>
+            <option value="12">Aventura</option>
+            <option value="16">Animação</option>
+            <option value="35">Comédia</option>
+            <option value="80">Crime</option>
+            <option value="99">Documentário</option>
+            <option value="18">Drama</option>
+            <option value="10751">Família</option>
+            <option value="14">Fantasia</option>
+            <option value="36">História</option>
+            <option value="27">Terror</option>
+            <option value="10402">Música</option>
+            <option value="9648">Mistério</option>
+            <option value="10749">Romance</option>
+            <option value="878">Ficção Científica</option>
+            <option value="10770">Cinema TV</option>
+            <option value="53">Suspense</option>
+            <option value="10752">Guerra</option>
+            <option value="37">Faroeste</option>
+            <!-- Opções de gênero continuam aqui -->
+          </select>
+        </div>
+
+
+
+
+
+        <button id="btnGerarFilmeAleatorio" class="btn btn-primary me-2">Filme Aleatório</button>
+        <button id="btnGerarSerieAleatoria" onclick="gerarSerieAleatoria()" class="btn btn-primary me-2">Série Aleatória</button>
+        <button id="btnOrdenar" onclick="ordenarRecomendacoes()" class="btn btn-primary me-2 mt-2">Ordenar por Título</button>
+        <button id="btnTendenciaHoje" class="btn btn-primary me-2">Tendência de Hoje</button>
+        <button id="btnTendenciaSemana" class="btn btn-primary">Tendência da Semana</button>
+      </section>
+
+
+
+      <section id="recomendacoes" class="movies-grid row">
+        
+        <!-- Aqui serão exibidas as recomendações -->
+      </section>
+      <section id="filmeEmDestaque" class="filme-em-destaque">
+        <!-- Aqui serão exibidas as informações do filme em destaque -->
+      </section>
+    </div>
+  </main>
+</body>
+</html>
+<!-- teste -->

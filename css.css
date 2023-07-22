@@ -1,0 +1,303 @@
+body {
+  font-family: Arial, sans-serif;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f2f2f2;
+}
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  padding: 0px;
+  text-align: center;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.username-container {
+  max-width: 300px; /* Defina a largura máxima desejada */
+  margin: 0 auto; /* Centraliza o elemento horizontalmente */
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.search-container input[type="text"] {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  outline: none;
+}
+
+.search-container button {
+  background-color: #f2f2f2;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.trailer-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trailer-iframe {
+  width: 80%;
+  height: 80%;
+}
+
+.fechar-trailer-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin: 0 auto;
+  justify-content: center;
+  align-content: center; /* Alinhar os filmes verticalmente ao centro */
+  padding: 10px;
+  border-radius: 5px;
+
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+}
+
+/* Estilizando os botões */
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  margin: 10px;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+}
+
+/* Estilizando os botões quando o cursor passar sobre eles */
+button:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+/* Estilizando o botão de busca */
+.search-container button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 0 5px 5px 0;
+}
+
+/* Adicionando ícone de lupa ao botão de busca */
+.search-container button::before {
+  content: "\f002"; /* Código do ícone de lupa (font awesome) */
+  font-family: "Font Awesome 5 Free"; /* Fonte do ícone (font awesome) */
+  font-weight: 900;
+  margin-right: 5px;
+}
+
+/* Estilizando o botão de excluir */
+.excluir-button {
+  background-color: transparent;
+  color: #ff4d4d;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  margin-left: 5px;
+  position: relative;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+}
+
+/* Estilizando o botão de excluir quando o cursor passar sobre ele */
+.excluir-button:hover {
+  background-color: #ff4d4d;
+  color: #fff;
+}
+.movie-type.movie {
+  background-color: #2196F3;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* Estilize o texto "TV" */
+.movie-type.tv {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.movie-item {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Sombra branca semi-transparente */
+  padding: 10px; /* Espaçamento interno para dar destaque visual */
+  border-radius: 8px; /* Borda arredondada para ficar mais bonito */
+}
+
+.recomendacao-container {
+  /* Configuração do conteúdo */
+  background-image: url('1317117.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px; /* Ajuste o padding conforme necessário */
+  text-align: center;
+  /* Configuração para ocupar toda a largura do .container */
+  position: absolute;
+  top: 150px; /* Dê uma margem no topo para evitar que o conteúdo fique sob o header */
+  left: 0;
+  right: 0;
+  box-sizing: border-box; /* Considerar a borda no cálculo total da largura */
+}
+
+/* Estilize os inputs e select dentro do .recomendacao-container */
+.recomendacao-container input,
+.recomendacao-container select {
+  max-width: 300px; /* Defina o valor que preferir para limitar a largura */
+  margin: 0 auto; /* Isso centralizará os elementos horizontalmente */
+}
+
+#recomendacoes {
+  padding-top: 1000px;
+}
+
+/* Estilizando o menu suspenso */
+.select-menu {
+  display: inline-block;
+  position: relative;
+  margin-right: 10px;
+}
+
+.select-menu select {
+  appearance: none;
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  padding: 8px 30px 8px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Estilizando a seta do menu suspenso */
+.select-menu::after {
+  content: '\25BE'; /* Código do símbolo de seta para baixo */
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #333;
+}
+
+/* Estilizando as opções do menu suspenso */
+.select-menu select option {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+/* Estilizando as opções selecionadas do menu suspenso */
+.select-menu select option:checked {
+  background-color: #ccc;
+}
+
+.serie-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.trailer-iframe {
+  width: 100%;
+  height: 300px; /* Defina a altura desejada para o player do trailer */
+  border: none; /* Remova a borda do iframe, se necessário */
+}
+
+#trailerError {
+  color: #ff0000;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Adicionando media query para ajustar o layout em telas menores */
+@media screen and (max-width: 600px) {
+  .movies-grid {
+    grid-template-columns: repeat(2, 180px); /* Exibir dois filmes por linha em dispositivos móveis */
+  }
+}
+
+/* Adicionando media query para ajustar o layout em telas maiores (PC) */
+@media screen and (min-width: 601px) {
+  .movies-grid {
+    grid-template-columns: repeat(5, 180px); /* Exibir cinco filmes por linha em telas maiores */
+  }
+}
+/* Ajustar tamanho da imagem do poster em dispositivos móveis */
+@media screen and (max-width: 600px) {
+  .movie-poster {
+    width: 100%;
+    height: auto;
+  }
+}
+/* Exibição de 2 filmes por linha em dispositivos móveis */
+@media screen and (max-width: 600px) {
+  .movies-grid {
+    grid-template-columns: repeat(2, 1fr); /* Utiliza 1fr para ocupar a largura disponível */
+    gap: 10px; /* Adiciona espaçamento entre os filmes */
+  }
+}
+
+/* Exibição de 5 filmes por linha em telas maiores (PC) */
+@media screen and (min-width: 601px) {
+  .movies-grid {
+    grid-template-columns: repeat(5, 1fr); /* Utiliza 1fr para ocupar a largura disponível */
+    gap: 20px; /* Adiciona espaçamento entre os filmes */
+  }
+}
+
+@media screen and (max-width: 767px) and (min-height: 800px) {
+  .recomendacao-container {
+    /* Defina estilos específicos para dispositivos móveis aqui */
+    margin-bottom: 20px; /* Espaçamento entre o recomendacao-container e as recomendações */
+  }
+}
