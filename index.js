@@ -310,9 +310,15 @@ function fazerLogin() {
   localStorage.setItem('username', username);
   localStorage.setItem('isLoggedIn', 'true');
 
-  // Limpar o formulário de login e mostrar recomendações
+  // Limpar o formulário de login
   usernameInput.value = '';
+
+  // Esconder o formulário de login e exibir as recomendações
+  document.getElementById('loginForm').style.display = 'none';
   mostrarRecomendacoes();
+
+  // Atualizar o texto da classe "logo" com o nome de usuário
+  document.getElementById('logo').textContent = 'Usuário: ' + username;
 }
 
 function ordenarRecomendacoes() {
@@ -418,6 +424,7 @@ function mostrarRecomendacoes() {
     document.getElementById('recomendacoes').innerHTML = ''; // Limpar a lista de recomendações
     return;
   }
+
   var recomendacoes = localStorage.getItem('recomendacoes');
   recomendacoes = recomendacoes ? JSON.parse(recomendacoes) : [];
 
