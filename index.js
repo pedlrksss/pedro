@@ -2,16 +2,10 @@ document.getElementById('btnGerarFilmeAleatorio').addEventListener('click', gera
 // Função para obter o poster do filme ou série usando a API do TMDb
 async function obterDadosMidia(tipoMidia, nomeMidia) {
   var apiKey = '2040040352cfe52696ade7e1f96634fa'; // Substitua pela sua chave de API do TMDb
-var baseUrl = 'https://api.themoviedb.org/3/search/';
-var queryUrl = `${baseUrl}${tipoMidia}?api_key=${apiKey}&query=${encodeURIComponent(nomeMidia)}&language=pt-BR`;
-
-// Faz a chamada para obter os dados do filme em português (pt-BR)
-fetch(queryUrl)
-  .then(response => response.json())
-  .then(data => {
-    // Processar os dados em português (pt-BR) aqui
-    console.log(data);
-  })
+  var baseUrl = 'https://api.themoviedb.org/3/search/';
+  var queryUrl = `${baseUrl}${tipoMidia}?api_key=${apiKey}&query=${encodeURIComponent(
+    nomeMidia
+  )}&language=pt-BR`; // Alteramos language=en-US para language=pt-BR
 
   try {
     var response = await fetch(queryUrl);
@@ -19,7 +13,8 @@ fetch(queryUrl)
     if (data.results && data.results.length > 0) {
       return {
         id: data.results[0].id,
-        posterPath: data.results[0].poster_path
+        posterPath: data.results[0].poster_path,
+        sinopse: data.results[0].overview || '', // Defina a sinopse ou uma string vazia caso não tenha
       };
     } else {
       return null;
@@ -61,26 +56,26 @@ async function gerarFilmeAleatorio() {
     // Defina um valor aleatório para a página (máximo de 1000 páginas para evitar possíveis problemas com limites da API)
     var paginaAleatoria = Math.floor(Math.random() * 1000) + 1;
 
-    // Crie a URL com o gênero selecionado
-    var baseUrl = 'https://api.themoviedb.org/3/discover/';
-    var queryUrl = `${baseUrl}${tipoMidia}?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&page=${paginaAleatoria}&with_genres=${generoFilme}`;
-    // Verifica se foi inserido um ano ou intervalo de anos
-    if (ano) {
-      // Verifica se foi inserido um intervalo de anos
-      if (ano.includes('-')) {
-        var intervaloAnos = ano.split('-');
-        var anoInicial = intervaloAnos[0];
-        var anoFinal = intervaloAnos[1];
-        queryUrl += `&release_date.gte=${anoInicial}-01-01&release_date.lte=${anoFinal}-12-31`;
-      } else {
-        // Caso tenha sido inserido apenas um ano
-        queryUrl += `&primary_release_year=${ano}`;
-      }
+    // Crie a URL com o gênero selecionado e o idioma em pt-BR
+  var baseUrl = 'https://api.themoviedb.org/3/discover/';
+  var queryUrl = `${baseUrl}${tipoMidia}?api_key=${apiKey}&language=pt-BR&sort_by=popularity.desc&page=${paginaAleatoria}&with_genres=${generoFilme}`;
+  // Verifica se foi inserido um ano ou intervalo de anos
+  if (ano) {
+    // Verifica se foi inserido um intervalo de anos
+    if (ano.includes('-')) {
+      var intervaloAnos = ano.split('-');
+      var anoInicial = intervaloAnos[0];
+      var anoFinal = intervaloAnos[1];
+      queryUrl += `&release_date.gte=${anoInicial}-01-01&release_date.lte=${anoFinal}-12-31`;
+    } else {
+      // Caso tenha sido inserido apenas um ano
+      queryUrl += `&primary_release_year=${ano}`;
     }
+  }
 
-    // Faz uma chamada para obter uma lista aleatória de filmes ou séries, usando a página aleatória, o gênero selecionado e o ano ou intervalo de anos
-    var response = await fetch(queryUrl);
-    var data = await response.json();
+  // Faz uma chamada para obter uma lista aleatória de filmes ou séries, usando a página aleatória, o gênero selecionado e o ano ou intervalo de anos
+  var response = await fetch(queryUrl);
+  var data = await response.json();
     
 
     if (data.results && data.results.length > 0) {
@@ -129,13 +124,12 @@ async function gerarSerieAleatoria() {
     var generoSerie = obterGeneroFilme(); // Usando a função para obter o gênero selecionado
     var ano = document.getElementById('ano').value.trim(); // Obtém o ano ou intervalo de anos selecionado
 
-
     // Defina um valor aleatório para a página (máximo de 1000 páginas para evitar possíveis problemas com limites da API)
     var paginaAleatoria = Math.floor(Math.random() * 1000) + 1;
 
-    // Crie a URL com o gênero selecionado
+    // Crie a URL com o gênero selecionado e o idioma em pt-BR
     var baseUrl = 'https://api.themoviedb.org/3/discover/';
-    var queryUrl = `${baseUrl}${tipoMidia}?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&page=${paginaAleatoria}&with_genres=${generoSerie}`;
+    var queryUrl = `${baseUrl}${tipoMidia}?api_key=${apiKey}&language=pt-BR&sort_by=popularity.desc&page=${paginaAleatoria}&with_genres=${generoSerie}`;
     // Verifica se foi inserido um ano ou intervalo de anos
     if (ano) {
       // Verifica se foi inserido um intervalo de anos
@@ -149,7 +143,8 @@ async function gerarSerieAleatoria() {
         queryUrl += `&first_air_date_year=${ano}`;
       }
     }
-     // Faz uma chamada para obter uma lista aleatória de séries, usando a página aleatória, o gênero selecionado e o ano ou intervalo de anos
+
+    // Faz uma chamada para obter uma lista aleatória de séries, usando a página aleatória, o gênero selecionado e o ano ou intervalo de anos
     var response = await fetch(queryUrl);
     var data = await response.json();
 
@@ -157,8 +152,8 @@ async function gerarSerieAleatoria() {
       // Escolhe aleatoriamente uma série da lista
       var serieAleatoria = data.results[Math.floor(Math.random() * data.results.length)];
 
-      // Obter o ID e o poster da série aleatória
-      var { id, poster_path: posterPath } = serieAleatoria;
+      // Obter o ID, o poster e a sinopse da série aleatória
+      var { id, poster_path: posterPath, overview: sinopse } = serieAleatoria;
 
       // Verificar se a série já está na lista de recomendações
       var recomendacoes = localStorage.getItem('recomendacoes');
@@ -173,8 +168,8 @@ async function gerarSerieAleatoria() {
       // Obter o ID do trailer da série aleatória
       var trailerId = await obterTrailer(tipoMidia, id);
 
-      // Salvando a recomendação no armazenamento local, incluindo o ID e o trailer
-      recomendacoes.push({ filme: serieAleatoria.name, posterUrl: posterPath, tipoMidia, id, trailerId });
+      // Salvando a recomendação no armazenamento local, incluindo o ID, o poster e a sinopse
+      recomendacoes.push({ filme: serieAleatoria.name, posterUrl: posterPath, tipoMidia, id, trailerId, sinopse });
       localStorage.setItem('recomendacoes', JSON.stringify(recomendacoes));
 
       // Atualizar a lista de recomendações
@@ -187,6 +182,7 @@ async function gerarSerieAleatoria() {
     console.error('Erro ao obter série aleatória:', error);
   }
 }
+
 
 
 // Adicione os eventos de clique nos botões
@@ -383,22 +379,31 @@ async function adicionarRecomendacao() {
   // Especificamos o tipo de mídia como 'movie' para filmes e 'tv' para séries
   var tipoMidia = document.getElementById('tipoMidia').value;
 
-  // Obter o ID e o poster do filme ou série
-  var { id, posterPath } = await obterDadosMidia(tipoMidia, filme);
+  // Obter o ID, o poster e a sinopse do filme ou série
+  var { id, posterPath, overview: sinopse } = await obterDadosMidia(tipoMidia, filme);
+
+  // Verificar se foi possível obter os dados do filme/série
+  if (!id || !posterPath) {
+    alert('Não foi possível encontrar o filme ou série. Verifique o nome e tente novamente.');
+    return;
+  }
 
   // Obter o ID do trailer do filme ou série
   var trailerId = await obterTrailer(tipoMidia, id);
 
-  // Salvando a recomendação no armazenamento local, incluindo o ID e o trailer
+  // Salvando a recomendação no armazenamento local, incluindo o ID, o poster e a sinopse
   var recomendacoes = localStorage.getItem('recomendacoes');
   recomendacoes = recomendacoes ? JSON.parse(recomendacoes) : [];
-  recomendacoes.push({ filme, posterUrl: posterPath, tipoMidia, id, trailerId });
+  recomendacoes.push({ filme, posterUrl: posterPath, tipoMidia, id, trailerId, sinopse }); // Certifique-se de incluir o atributo 'sinopse' com a variável sinopse
   localStorage.setItem('recomendacoes', JSON.stringify(recomendacoes));
 
   // Limpar campo de entrada e atualizar a lista de recomendações
   filmeInput.value = '';
   mostrarRecomendacoes();
 }
+
+
+
 
 function exibirTrailer(item) {
   var trailerContainer = document.createElement('div');
@@ -445,10 +450,13 @@ function mostrarRecomendacoes() {
   recomendacoes.forEach(function (item, index) {
     var filme = item.filme;
     var tipoMidia = item.tipoMidia;
+    var sinopse = item.sinopse; // Adicionando a sinopse
 
     var movieItem = document.createElement('div');
     movieItem.classList.add('movie-item');
 
+
+    
     // Exibe "Movie" em azul para filmes e "TV" em verde para séries
     var movieType = document.createElement('p');
     movieType.textContent = tipoMidia === 'movie' ? 'Filme' : 'Serie';
@@ -485,13 +493,15 @@ function mostrarRecomendacoes() {
     btnVerTrailer.onclick = function () {
       exibirTrailer(item);
     };
-    
+   
+
     var btnSinopse = document.createElement('button');
     btnSinopse.textContent = 'Sinopse';
     btnSinopse.classList.add('sinopse-button');
     btnSinopse.onclick = function () {
-      exibirSinopse(item);
+      exibirSinopse(item, sinopse) ;
     };
+   
 
     movieItem.appendChild(btnSinopse);
     movieItem.appendChild(btnExcluir);
@@ -547,7 +557,7 @@ function exibirSinopse(item) {
   sinopseContainer.classList.add('sinopse-container');
 
   var sinopseText = document.createElement('p');
-  sinopseText.textContent = item.sinopse; // Supondo que a sinopse esteja no objeto 'item', verifique se os dados possuem a propriedade 'sinopse' corretamente.
+  sinopseText.textContent = item.sinopse; // Mostra a sinopse do item recebido como parâmetro
   sinopseText.classList.add('sinopse-text');
 
   var btnFechar = document.createElement('button');
@@ -562,6 +572,8 @@ function exibirSinopse(item) {
 
   document.body.appendChild(sinopseContainer);
 }
+
+
 // Rota para adicionar uma recomendação
 app.post('/adicionarRecomendacao', (req, res) => {
   const recomendacao = req.body;
