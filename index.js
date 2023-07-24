@@ -3,7 +3,7 @@ document.getElementById('btnGerarFilmeAleatorio').addEventListener('click', gera
 async function obterDadosMidia(tipoMidia, nomeMidia) {
   var apiKey = '2040040352cfe52696ade7e1f96634fa'; // Substitua pela sua chave de API do TMDb
 var baseUrl = 'https://api.themoviedb.org/3/search/';
-var queryUrl = `${baseUrl}${tipoMidia}?api_key=${apiKey}&query=${encodeURIComponent(nomeFilme)}&language=pt-BR`;
+var queryUrl = `${baseUrl}${tipoMidia}?api_key=${apiKey}&query=${encodeURIComponent(nomeMidia)}&language=pt-BR`;
 
 // Faz a chamada para obter os dados do filme em português (pt-BR)
 fetch(queryUrl)
