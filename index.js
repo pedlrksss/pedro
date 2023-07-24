@@ -2,8 +2,16 @@ document.getElementById('btnGerarFilmeAleatorio').addEventListener('click', gera
 // Função para obter o poster do filme ou série usando a API do TMDb
 async function obterDadosMidia(tipoMidia, nomeMidia) {
   var apiKey = '2040040352cfe52696ade7e1f96634fa'; // Substitua pela sua chave de API do TMDb
-  var baseUrl = 'https://api.themoviedb.org/3/search/';
-  var queryUrl = `${baseUrl}${tipoMidia}?api_key=${apiKey}&query=${encodeURIComponent(nomeMidia)}`;
+var baseUrl = 'https://api.themoviedb.org/3/search/';
+var queryUrl = `${baseUrl}${tipoMidia}?api_key=${apiKey}&query=${encodeURIComponent(nomeFilme)}&language=pt-BR`;
+
+// Faz a chamada para obter os dados do filme em português (pt-BR)
+fetch(queryUrl)
+  .then(response => response.json())
+  .then(data => {
+    // Processar os dados em português (pt-BR) aqui
+    console.log(data);
+  })
 
   try {
     var response = await fetch(queryUrl);
@@ -76,15 +84,15 @@ async function gerarFilmeAleatorio() {
     
 
     if (data.results && data.results.length > 0) {
-      // Escolhe aleatoriamente um filme ou série da lista
-      var filmeAleatorio = data.results[Math.floor(Math.random() * data.results.length)];
+    // Escolhe aleatoriamente um filme ou série da lista
+    var filmeAleatorio = data.results[Math.floor(Math.random() * data.results.length)];
 
-      // Obter o ID e o poster do filme ou série aleatória
-      var { id, poster_path: posterPath } = filmeAleatorio;
+    // Obter o ID, o poster e a sinopse do filme ou série aleatória
+    var { id, poster_path: posterPath, overview: sinopse } = filmeAleatorio; // Verifique se a API do TMDb retorna a sinopse com o nome 'overview'.
 
-      // Verificar se o filme ou série já está na lista de recomendações
-      var recomendacoes = localStorage.getItem('recomendacoes');
-      recomendacoes = recomendacoes ? JSON.parse(recomendacoes) : [];
+    // Verificar se o filme ou série já está na lista de recomendações
+    var recomendacoes = localStorage.getItem('recomendacoes');
+    recomendacoes = recomendacoes ? JSON.parse(recomendacoes) : [];
 
       if (recomendacoes.some(item => item.id === id)) {
         console.log('Filme ou série já adicionado à lista de recomendações. Tentando novamente...');
@@ -96,7 +104,7 @@ async function gerarFilmeAleatorio() {
       var trailerId = await obterTrailer(tipoMidia, id);
 
       // Salvando a recomendação no armazenamento local, incluindo o ID e o trailer
-      recomendacoes.push({ filme: filmeAleatorio.title, posterUrl: posterPath, tipoMidia, id, trailerId });
+    recomendacoes.push({ filme: filmeAleatorio.title, posterUrl: posterPath, tipoMidia, id, trailerId, sinopse });
       localStorage.setItem('recomendacoes', JSON.stringify(recomendacoes));
 
       // Atualizar a lista de recomendações
@@ -477,7 +485,17 @@ function mostrarRecomendacoes() {
     btnVerTrailer.onclick = function () {
       exibirTrailer(item);
     };
+    
+    var btnSinopse = document.createElement('button');
+    btnSinopse.textContent = 'Sinopse';
+    btnSinopse.classList.add('sinopse-button');
+    btnSinopse.onclick = function () {
+      exibirSinopse(item);
+    };
 
+    movieItem.appendChild(btnSinopse);
+    movieItem.appendChild(btnExcluir);
+    moviesGrid.appendChild(movieItem);
     // Adicionar o botão "Ver Trailer" antes do botão de exclusão
     movieItem.appendChild(btnVerTrailer);
     
@@ -523,6 +541,27 @@ function excluirRecomendacao(index) {
   }
 }
 
+// Função para exibir a sinopse do filme ou série
+function exibirSinopse(item) {
+  var sinopseContainer = document.createElement('div');
+  sinopseContainer.classList.add('sinopse-container');
+
+  var sinopseText = document.createElement('p');
+  sinopseText.textContent = item.sinopse; // Supondo que a sinopse esteja no objeto 'item', verifique se os dados possuem a propriedade 'sinopse' corretamente.
+  sinopseText.classList.add('sinopse-text');
+
+  var btnFechar = document.createElement('button');
+  btnFechar.textContent = 'Fechar Sinopse';
+  btnFechar.classList.add('fechar-sinopse-button');
+  btnFechar.onclick = function () {
+    sinopseContainer.remove();
+  };
+
+  sinopseContainer.appendChild(sinopseText);
+  sinopseContainer.appendChild(btnFechar);
+
+  document.body.appendChild(sinopseContainer);
+}
 // Rota para adicionar uma recomendação
 app.post('/adicionarRecomendacao', (req, res) => {
   const recomendacao = req.body;

@@ -15,10 +15,47 @@ header {
   text-align: center;
 }
 
+
 .logo {
   font-size: 24px;
   font-weight: bold;
   margin: 0;
+}
+.sinopse-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-top: 10px;
+}
+
+/* Estilos para a caixa de diálogo da sinopse */
+.sinopse-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 90%;
+}
+
+.sinopse-text {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.fechar-sinopse-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
 }
 
 .username-container {
