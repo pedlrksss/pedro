@@ -1,7 +1,4 @@
 document.getElementById('btnGerarFilmeAleatorio').addEventListener('click', gerarFilmeAleatorio);
-// Defina o número máximo de filmes exibidos por página
-const filmesPorPagina = 25;
-
 
 // Função para obter o poster do filme ou série usando a API do TMDb
 async function obterDadosMidia(tipoMidia, nomeMidia) {
@@ -190,6 +187,8 @@ async function gerarSerieAleatoria() {
 
 
 
+
+
 // Adicione os eventos de clique nos botões
 document.getElementById('btnTendenciaHoje').addEventListener('click', mostrarTendenciaHoje);
 document.getElementById('btnTendenciaSemana').addEventListener('click', mostrarTendenciaSemana);
@@ -235,6 +234,11 @@ async function mostrarTendenciaSemana() {
     console.error('Erro ao obter filmes em tendência da semana:', error);
   }
 }
+
+
+
+
+
 
 // Função para atualizar a lista de recomendações na tela
 function atualizarListaRecomendacoes(recomendacoes) {
@@ -298,6 +302,16 @@ function atualizarListaRecomendacoes(recomendacoes) {
 
   listaRecomendacoes.appendChild(moviesGrid);
 }
+
+
+
+// Chamando a função exibirFilmesCurtidos quando o botão "Filmes Curtidos" é clicado
+document.getElementById('btnFilmesCurtidos').addEventListener('click', exibirFilmesCurtidos);
+
+
+
+// Chamando a função exibirFilmesCurtidos quando o botão "Filmes Curtidos" é clicado
+document.getElementById('btnFilmesCurtidos').addEventListener('click', exibirFilmesCurtidos);
 
 // Função para obter o gênero selecionado pelo usuário
 function obterGeneroFilme() {
