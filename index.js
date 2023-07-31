@@ -1,4 +1,8 @@
 document.getElementById('btnGerarFilmeAleatorio').addEventListener('click', gerarFilmeAleatorio);
+// Defina o número máximo de filmes exibidos por página
+const filmesPorPagina = 25;
+
+
 // Função para obter o poster do filme ou série usando a API do TMDb
 async function obterDadosMidia(tipoMidia, nomeMidia) {
   var apiKey = '2040040352cfe52696ade7e1f96634fa'; // Substitua pela sua chave de API do TMDb
@@ -52,6 +56,7 @@ async function gerarFilmeAleatorio() {
     // Obtenha o gênero selecionado pelo usuário
     var generoFilme = document.getElementById('generoFilme').value;
     var ano = document.getElementById('ano').value.trim(); // Obtém o ano ou intervalo de anos selecionado
+    
 
     // Defina um valor aleatório para a página (máximo de 1000 páginas para evitar possíveis problemas com limites da API)
     var paginaAleatoria = Math.floor(Math.random() * 1000) + 1;
@@ -83,7 +88,7 @@ async function gerarFilmeAleatorio() {
     var filmeAleatorio = data.results[Math.floor(Math.random() * data.results.length)];
 
     // Obter o ID, o poster e a sinopse do filme ou série aleatória
-    var { id, poster_path: posterPath, overview: sinopse } = filmeAleatorio; // Verifique se a API do TMDb retorna a sinopse com o nome 'overview'.
+  var { id, poster_path: posterPath, overview: sinopse, studio } = filmeAleatorio;
 
     // Verificar se o filme ou série já está na lista de recomendações
     var recomendacoes = localStorage.getItem('recomendacoes');
@@ -429,7 +434,7 @@ function exibirTrailer(item) {
 
 // Função para exibir as recomendações de filmes e séries
 function mostrarRecomendacoes() {
-    var isLoggedIn = localStorage.getItem('isLoggedIn');
+  var isLoggedIn = localStorage.getItem('isLoggedIn');
 
   if (!isLoggedIn || isLoggedIn !== 'true') {
     // Usuário não autenticado, mostrar formulário de login
@@ -455,13 +460,16 @@ function mostrarRecomendacoes() {
     var movieItem = document.createElement('div');
     movieItem.classList.add('movie-item');
 
+    var curtidas = localStorage.getItem('curtidas');
+    curtidas = curtidas ? JSON.parse(curtidas) : [];
+    var isCurtido = curtidas.includes(item.id);
 
-    
     // Exibe "Movie" em azul para filmes e "TV" em verde para séries
     var movieType = document.createElement('p');
     movieType.textContent = tipoMidia === 'movie' ? 'Filme' : 'Serie';
     movieType.classList.add('movie-type', tipoMidia);
     movieItem.appendChild(movieType);
+
     if (item.posterUrl) {
       var img = document.createElement('img');
       img.src = 'https://image.tmdb.org/t/p/w185' + item.posterUrl;
@@ -469,6 +477,7 @@ function mostrarRecomendacoes() {
       img.classList.add('movie-poster');
       movieItem.appendChild(img);
     }
+
     var serieName = document.createElement('p');
     serieName.textContent = filme;
     serieName.classList.add('serie-name'); // Adicionando a classe .serie-name
@@ -493,29 +502,39 @@ function mostrarRecomendacoes() {
     btnVerTrailer.onclick = function () {
       exibirTrailer(item);
     };
-   
 
     var btnSinopse = document.createElement('button');
     btnSinopse.textContent = 'Sinopse';
     btnSinopse.classList.add('sinopse-button');
     btnSinopse.onclick = function () {
-      exibirSinopse(item, sinopse) ;
+      exibirSinopse(item, sinopse);
     };
-   
+
+    var btnCurtir = document.createElement('button');
+    btnCurtir.textContent = '';
+    btnCurtir.classList.add('curtir-button');
+
+    // Adiciona a classe "curtido" ao botão caso o filme/série tenha sido curtido anteriormente
+    if (isCurtido) {
+      btnCurtir.classList.add('curtido');
+    }
+
+    btnCurtir.onclick = function () {
+      curtirRecomendacao(item);
+    };
 
     movieItem.appendChild(btnSinopse);
     movieItem.appendChild(btnExcluir);
-    moviesGrid.appendChild(movieItem);
-    // Adicionar o botão "Ver Trailer" antes do botão de exclusão
+    movieItem.appendChild(btnCurtir);
     movieItem.appendChild(btnVerTrailer);
-    
     movieItem.appendChild(shareButton);
     movieItem.appendChild(btnExcluir);
     moviesGrid.appendChild(movieItem);
   });
-
+  
   listaRecomendacoes.appendChild(moviesGrid);
 }
+
 
 function ordenarRecomendacoes() {
   var recomendacoes = localStorage.getItem('recomendacoes');
@@ -537,6 +556,25 @@ function ordenarRecomendacoes() {
   mostrarRecomendacoes();
 }
 
+function curtirRecomendacao(item) {
+  var curtidas = localStorage.getItem('curtidas');
+  curtidas = curtidas ? JSON.parse(curtidas) : [];
+
+  // Verificar se o ID do filme/série já está na lista de curtidas
+  if (curtidas.includes(item.id)) {
+    // Remover o ID da lista de curtidas (descurtir o filme)
+    curtidas = curtidas.filter((id) => id !== item.id);
+  } else {
+    // Adicionar o ID do filme/série à lista de curtidas (curtir o filme)
+    curtidas.push(item.id);
+  }
+
+  // Salvar a lista atualizada de IDs de filmes curtidos no localStorage
+  localStorage.setItem('curtidas', JSON.stringify(curtidas));
+
+  // Atualizar a lista de recomendações para refletir as mudanças de curtidas
+  mostrarRecomendacoes();
+}
 
 
 // Função para excluir uma recomendação
@@ -572,6 +610,8 @@ function exibirSinopse(item) {
 
   document.body.appendChild(sinopseContainer);
 }
+
+
 
 
 // Rota para adicionar uma recomendação
